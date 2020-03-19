@@ -34,5 +34,10 @@ namespace CompareStandings.Data
         {
             return 0;
         }
+
+        public List<Team> GetAllTeams()
+        {
+            return teams;
+        }
     }
 }
