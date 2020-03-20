@@ -64,6 +64,8 @@ namespace CompareStandings.Data
                 GetAwayWinCount(id),
                 GetAwayLossCount(id)
             )).OrderByDescending(r => r.WinPercentage).ToList();
+
+            TeamRecordInfo.SetBestTeamDifferential(teamRecordInfos);
         }
 
         public List<TeamRecordInfo> GetAllTeamRecordInfos()
