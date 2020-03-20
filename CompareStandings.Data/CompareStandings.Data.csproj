@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CompareStandings.Core\CompareStandings.Core.csproj" />
+    <ProjectReference Include="..\CompareStandings.Info\CompareStandings.Info.csproj" />
   </ItemGroup>
 
 </Project>

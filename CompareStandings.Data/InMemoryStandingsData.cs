@@ -1,4 +1,5 @@
 ﻿using CompareStandings.Core;
+using CompareStandings.Info;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,6 +9,7 @@ namespace CompareStandings.Data
     {
         List<Team> teams;
         List<Game> games;
+        List<TeamRecordInfo> teamRecordInfos;
 
         public InMemoryStandingsData()
         {
@@ -54,23 +56,41 @@ namespace CompareStandings.Data
                 new Game() { ID = 29, HomeTeamID = 3, AwayTeamID = 6, HomeTeamPoints = 116, AwayTeamPoints = 86 },
                 new Game() { ID = 30, HomeTeamID = 1, AwayTeamID = 4, HomeTeamPoints = 87, AwayTeamPoints = 115 }
             };
+
+            teamRecordInfos = Enumerable.Range(1, teams.Count).Select(id => new TeamRecordInfo()
+            {
+                TeamName = GetTeamName(id),
+                OverallRecord = GetOverallRecord(id),
+                HomeRecord = GetHomeRecord(id),
+                AwayRecord = GetAwayRecord(id)
+            }).ToList();
         }
 
-        public string GetRecord(int teamID)
+        public List<TeamRecordInfo> GetAllTeamRecordInfos()
+        {
+            return teamRecordInfos;
+        }
+
+        private string GetTeamName(int teamID)
+        {
+            return teams.Where(r => r.ID == teamID).Select(r => r.Name).FirstOrDefault();
+        }
+
+        private string GetOverallRecord(int teamID)
         {
             int wins = GetHomeWinCount(teamID) + GetAwayWinCount(teamID);
             int losses = GetHomeLossCount(teamID) + GetAwayLossCount(teamID);
             return $"{wins}-{losses}";
         }
 
-        public string GetHomeRecord(int teamID)
+        private string GetHomeRecord(int teamID)
         {
             int wins = GetHomeWinCount(teamID);
             int losses = GetHomeLossCount(teamID);
             return $"{wins}-{losses}";
         }
 
-        public string GetAwayRecord(int teamID)
+        private string GetAwayRecord(int teamID)
         {
             int wins = GetAwayWinCount(teamID);
             int losses = GetAwayLossCount(teamID);
@@ -95,11 +115,6 @@ namespace CompareStandings.Data
         private int GetAwayLossCount(int teamID)
         {
             return games.Where(r => r.AwayTeamID == teamID && r.AwayTeamPoints < r.HomeTeamPoints).Count();
-        }
-
-        public List<Team> GetAllTeams()
-        {
-            return teams;
         }
     }
 }

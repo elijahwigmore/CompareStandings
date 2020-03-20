@@ -1,5 +1,5 @@
-﻿using CompareStandings.Core;
-using CompareStandings.Data;
+﻿using CompareStandings.Data;
+using CompareStandings.Info;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -13,7 +13,7 @@ namespace CompareStandings.Pages
         private readonly IStandingsData _standingsData;
         private readonly ILogger<IndexModel> _logger;
 
-        public IEnumerable<Team> Teams;
+        public IEnumerable<TeamRecordInfo> TeamRecordInfos;
 
         public IndexModel(IConfiguration config, IStandingsData standingsData, ILogger<IndexModel> logger)
         {
@@ -24,7 +24,7 @@ namespace CompareStandings.Pages
 
         public void OnGet()
         {
-            Teams = _standingsData.GetAllTeams();
+            TeamRecordInfos = _standingsData.GetAllTeamRecordInfos();
         }
     }
 }

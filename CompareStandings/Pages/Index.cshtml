@@ -4,8 +4,26 @@
     ViewData["Title"] = "Home page";
 }
 
-<h1 class="display-4">Teams</h1>
-@foreach (var team in Model.Teams)
-{
-    <p>@team.Name</p>
-}
+<h1 class="display-4">Standings</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Record</th>
+            <th>Home</th>
+            <th>Away</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var info in Model.TeamRecordInfos)
+        {
+            <tr>
+                <td>@info.TeamName</td>
+                <td>@info.OverallRecord</td>
+                <td>@info.HomeRecord</td>
+                <td>@info.AwayRecord</td>
+            </tr>
+        }
+    </tbody>
+</table>
