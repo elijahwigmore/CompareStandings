@@ -44,5 +44,26 @@
                 return $"{_awayWinCount}-{_awayLossCount}";
             }
         }
+
+        public string WinPercentage
+        {
+            get
+            {
+                int wins = _homeWinCount + _awayWinCount;
+                int losses = _homeLossCount + _awayLossCount;
+
+                double value;
+                if (wins == 0)
+                {
+                    value = 0.0;
+                }
+                else
+                {
+                    value = (double)wins / (double)(wins + losses);
+                }
+
+                return $"{value:.000}";
+            }
+        }
     }
 }
