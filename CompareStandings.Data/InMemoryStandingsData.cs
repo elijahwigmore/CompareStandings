@@ -63,7 +63,7 @@ namespace CompareStandings.Data
                 GetHomeLossCount(id),
                 GetAwayWinCount(id),
                 GetAwayLossCount(id)
-            )).ToList();
+            )).OrderByDescending(r => r.WinPercentage).ToList();
         }
 
         public List<TeamRecordInfo> GetAllTeamRecordInfos()
