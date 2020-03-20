@@ -57,13 +57,13 @@ namespace CompareStandings.Data
                 new Game() { ID = 30, HomeTeamID = 1, AwayTeamID = 4, HomeTeamPoints = 87, AwayTeamPoints = 115 }
             };
 
-            teamRecordInfos = Enumerable.Range(1, teams.Count).Select(id => new TeamRecordInfo()
-            {
-                TeamName = GetTeamName(id),
-                OverallRecord = GetOverallRecord(id),
-                HomeRecord = GetHomeRecord(id),
-                AwayRecord = GetAwayRecord(id)
-            }).ToList();
+            teamRecordInfos = Enumerable.Range(1, teams.Count).Select(id => new TeamRecordInfo(
+                GetTeamName(id),
+                GetHomeWinCount(id),
+                GetHomeLossCount(id),
+                GetAwayWinCount(id),
+                GetAwayLossCount(id)
+            )).ToList();
         }
 
         public List<TeamRecordInfo> GetAllTeamRecordInfos()
@@ -74,27 +74,6 @@ namespace CompareStandings.Data
         private string GetTeamName(int teamID)
         {
             return teams.Where(r => r.ID == teamID).Select(r => r.Name).FirstOrDefault();
-        }
-
-        private string GetOverallRecord(int teamID)
-        {
-            int wins = GetHomeWinCount(teamID) + GetAwayWinCount(teamID);
-            int losses = GetHomeLossCount(teamID) + GetAwayLossCount(teamID);
-            return $"{wins}-{losses}";
-        }
-
-        private string GetHomeRecord(int teamID)
-        {
-            int wins = GetHomeWinCount(teamID);
-            int losses = GetHomeLossCount(teamID);
-            return $"{wins}-{losses}";
-        }
-
-        private string GetAwayRecord(int teamID)
-        {
-            int wins = GetAwayWinCount(teamID);
-            int losses = GetAwayLossCount(teamID);
-            return $"{wins}-{losses}";
         }
 
         private int GetHomeWinCount(int teamID)
