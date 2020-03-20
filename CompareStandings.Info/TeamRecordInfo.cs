@@ -10,22 +10,28 @@ namespace CompareStandings.Info
         private int _homeLossCount;
         private int _awayWinCount;
         private int _awayLossCount;
+        private int _totalPointsFor;
+        private int _totalPointsAgainst;
 
         private readonly int _winCount;
         private readonly int _lossCount;
+        private readonly int _gameCount;
 
         private static int BestTeamDifferential;
 
-        public TeamRecordInfo(string teamName, int homeWinCount, int homeLossCount, int awayWinCount, int awayLossCount)
+        public TeamRecordInfo(string teamName, int homeWinCount, int homeLossCount, int awayWinCount, int awayLossCount, int totalPointsFor, int totalPointsAgainst)
         {
             _teamName = teamName;
             _homeWinCount = homeWinCount;
             _homeLossCount = homeLossCount;
             _awayWinCount = awayWinCount;
             _awayLossCount = awayLossCount;
+            _totalPointsFor = totalPointsFor;
+            _totalPointsAgainst = totalPointsAgainst;
 
             _winCount = _homeWinCount + _awayWinCount;
             _lossCount = _homeLossCount + _awayLossCount;
+            _gameCount = _winCount + _lossCount;
         }
 
         public static void SetBestTeamDifferential(IEnumerable<TeamRecordInfo> teamRecordInfos)
@@ -55,7 +61,7 @@ namespace CompareStandings.Info
                 }
                 else
                 {
-                    value = (double)_winCount / (double)(_winCount + _lossCount);
+                    value = _winCount / (double)_gameCount;
                 }
 
                 return $"{value:.000}";
@@ -83,6 +89,34 @@ namespace CompareStandings.Info
             get
             {
                 return $"{_awayWinCount}-{_awayLossCount}";
+            }
+        }
+
+        public string PointsForPerGame
+        {
+            get
+            {
+                double value = _totalPointsFor / (double)_gameCount;
+                return $"{value:0.0}";
+            }
+        }
+
+        public string PointsAgainstPerGame
+        {
+            get
+            {
+                double value = _totalPointsAgainst / (double)_gameCount;
+                return $"{value:0.0}";
+            }
+        }
+
+        // TODO: Figure out how to do formatting in JS so the point variables can be doubles and differential can subtract the two
+        public string PointDifferentialPerGame
+        {
+            get
+            {
+                double value = (_totalPointsFor - _totalPointsAgainst) / (double)_gameCount;
+                return $"{value:0.0}";
             }
         }
     }

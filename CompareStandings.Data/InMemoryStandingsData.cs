@@ -62,7 +62,9 @@ namespace CompareStandings.Data
                 GetHomeWinCount(id),
                 GetHomeLossCount(id),
                 GetAwayWinCount(id),
-                GetAwayLossCount(id)
+                GetAwayLossCount(id),
+                GetTotalPointsFor(id),
+                GetTotalPointsAgainst(id)
             )).OrderByDescending(r => r.WinPercentage).ToList();
 
             TeamRecordInfo.SetBestTeamDifferential(teamRecordInfos);
@@ -96,6 +98,22 @@ namespace CompareStandings.Data
         private int GetAwayLossCount(int teamID)
         {
             return games.Where(r => r.AwayTeamID == teamID && r.AwayTeamPoints < r.HomeTeamPoints).Count();
+        }
+
+        private int GetTotalPointsFor(int teamID)
+        {
+            int homePointsFor = games.Where(r => r.HomeTeamID == teamID).Sum(r => r.HomeTeamPoints);
+            int awayPointsFor = games.Where(r => r.AwayTeamID == teamID).Sum(r => r.AwayTeamPoints);
+
+            return homePointsFor + awayPointsFor;
+        }
+
+        private int GetTotalPointsAgainst(int teamID)
+        {
+            int homePointsAgainst = games.Where(r => r.HomeTeamID == teamID).Sum(r => r.AwayTeamPoints);
+            int awayPointsAgainst = games.Where(r => r.AwayTeamID == teamID).Sum(r => r.HomeTeamPoints);
+
+            return homePointsAgainst + awayPointsAgainst;
         }
     }
 }
