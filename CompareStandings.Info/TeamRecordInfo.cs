@@ -8,6 +8,9 @@
         private int _awayWinCount;
         private int _awayLossCount;
 
+        private readonly int _winCount;
+        private readonly int _lossCount;
+
         public TeamRecordInfo(string teamName, int homeWinCount, int homeLossCount, int awayWinCount, int awayLossCount)
         {
             _teamName = teamName;
@@ -15,17 +18,32 @@
             _homeLossCount = homeLossCount;
             _awayWinCount = awayWinCount;
             _awayLossCount = awayLossCount;
+
+            _winCount = _homeWinCount + _awayWinCount;
+            _lossCount = _homeLossCount + _awayLossCount;
         }
 
         public string TeamName => _teamName;
 
-        public string OverallRecord
+        public int WinCount => _winCount;
+
+        public int LossCount => _lossCount;
+
+        public string WinPercentage
         {
             get
             {
-                int wins = _homeWinCount + _awayWinCount;
-                int losses = _homeLossCount + _awayLossCount;
-                return $"{wins}-{losses}";
+                double value;
+                if (_winCount == 0)
+                {
+                    value = 0.0;
+                }
+                else
+                {
+                    value = (double)_winCount / (double)(_winCount + _lossCount);
+                }
+
+                return $"{value:.000}";
             }
         }
 
@@ -42,27 +60,6 @@
             get
             {
                 return $"{_awayWinCount}-{_awayLossCount}";
-            }
-        }
-
-        public string WinPercentage
-        {
-            get
-            {
-                int wins = _homeWinCount + _awayWinCount;
-                int losses = _homeLossCount + _awayLossCount;
-
-                double value;
-                if (wins == 0)
-                {
-                    value = 0.0;
-                }
-                else
-                {
-                    value = (double)wins / (double)(wins + losses);
-                }
-
-                return $"{value:.000}";
             }
         }
     }
